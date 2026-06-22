@@ -1,0 +1,15 @@
+{
+  "name": "python-tutorial",
+  "version": "1.0.0",
+  "description": "Python 3.12+ 进阶教程 — 深入内部机制、现代用法、设计思想",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "vitepress": "^1.6.4"
+  }
+}
