@@ -168,14 +168,18 @@ export default defineConfig({
           token.info = 'python'
           const highlighted = defaultFence(tokens, idx, options, env, self)
           token.info = info
-          return `${highlighted}\n<ClientOnly><PythonRunner code="${encoded}" /></ClientOnly>`
+          // v-pre 防止 Vue SSR 把代码里的 {{ }} 当模板表达式解析
+          return `<div v-pre>${highlighted}</div>\n<ClientOnly><PythonRunner code="${encoded}" /></ClientOnly>`
         }
 
-        // 其他语言走默认渲染
+        // 其他语言走默认渲染（加 v-pre 防止模板冲突）
+        let result
         if (typeof defaultFence === 'function') {
-          return defaultFence(tokens, idx, options, env, self)
+          result = defaultFence(tokens, idx, options, env, self)
+        } else {
+          result = self.renderToken(tokens, idx, options)
         }
-        return self.renderToken(tokens, idx, options)
+        return `<div v-pre>${result}</div>`
       }
     },
   },
