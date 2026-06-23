@@ -70,9 +70,12 @@ export function usePyodide() {
       try {
         await loadScript(PYODIDE_URL)
         // loadPyodide 由脚本注入到 globalThis
+        // 显式指定 indexURL：Pyodide 的标准库文件所在目录
+        // 必须设为 CDN 路径，否则在 GitHub Pages 等托管环境会 fallback
+        // 到 document.baseURI 导致 404
+        const PYODIDE_INDEX = 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/'
         pyodideInstance = await globalThis.loadPyodide({
-          // 预加载常用第三方库（按需添加）
-          // packages: ['numpy', 'pandas'],
+          indexURL: PYODIDE_INDEX,
         })
         isReady.value = true
         return pyodideInstance
